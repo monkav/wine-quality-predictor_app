@@ -1,4 +1,4 @@
-# 🍷 Wine Quality Prediction — ML + Streamlit Web App
+#  Wine Quality Prediction — ML + Streamlit Web App
 
 > **Predicting premium red wines using chemically engineered features and a Random Forest classifier**
 
@@ -115,7 +115,6 @@ wine-quality-prediction/
     └── screenshots/          # App screenshots (optional)
 ```
 
-> **Note:** `.pkl` files are not committed to the repository. Generate them by running the notebook end-to-end, then place them in the `models/` folder (update the paths in `app.py` accordingly).
 
 ---
 
