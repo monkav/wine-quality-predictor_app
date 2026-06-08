@@ -40,7 +40,7 @@ IMG = {
 }
 
 # ── CSS ───────────────────────────────────────────────────────────────────────
-st.markdown(f"""
+st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;500&display=swap');
 
@@ -469,7 +469,7 @@ html, body, [class*="css"] {
     }
 }
 </style>
-""", unsafe_allow_html=True), unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 
 # ── Model loading ─────────────────────────────────────────────────────────────
