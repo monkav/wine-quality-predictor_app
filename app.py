@@ -1,7 +1,8 @@
 """
-Wine Quality Prediction — Streamlit Application (Redesigned)
+Wine Quality Prediction — Streamlit Application
 Author : Kavinda Pushpa Kumara
 Role   : Food Science Student | IBM Certified Data Scientist
+
 """
 
 import joblib
@@ -14,12 +15,12 @@ import matplotlib.patches as mpatches
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Wine Quality Predictor",
-    page_icon="🍷",
+    page_icon="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=32&h=32&fit=crop",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
 
-# ── Image URLs ────────────────────────────────────────────────────────────────
+# ── Image URLs ───────────────────────────────────────────────────────────────
 IMG = {
     "hero":     "https://images.unsplash.com/photo-1506377872008-6645d9d29ef7?w=1600&q=80&fit=crop&crop=center",
     "pour":     "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80&fit=crop&crop=center",
@@ -28,149 +29,92 @@ IMG = {
     "vineyard": "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=800&q=80&fit=crop&crop=center",
 }
 
-# ── Enhanced CSS with better mobile support ───────────────────────────────────
-st.markdown("""
+# ── CSS with enhanced mobile responsiveness ───────────────────────────────────
+st.markdown(f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;500&display=swap');
 
-html, body, [class*="css"] {
+html, body, [class*="css"] {{
     font-family: 'Lato', sans-serif;
     background-color: #faf7f2;
     color: #2c2118;
-}
-.stApp { background: #faf7f2; }
-#MainMenu, footer, header { visibility: hidden; }
-[data-testid="stSidebar"] { display: none; }
-.block-container { padding: 0 !important; max-width: 100% !important; }
+}}
+.stApp {{ background: #faf7f2; }}
+#MainMenu, footer, header {{ visibility: hidden; }}
+[data-testid="stSidebar"] {{ display: none; }}
+.block-container {{ padding: 0 !important; max-width: 100% !important; }}
 
-/* Hero Banner - Improved mobile */
-.hero-banner {
+/* Hero */
+.hero-banner {{
     position: relative; width: 100%; height: 180px;
     overflow: hidden; background: #1a0a0e;
-}
-.hero-banner img {
+}}
+.hero-banner img {{
     width: 100%; height: 100%; object-fit: cover;
-    object-position: center 60%; opacity: 0.55; display: block;
-}
-.hero-overlay {
+    object-position: center 60%; opacity: 0.5;
+}}
+.hero-overlay {{
     position: absolute; inset: 0;
-    background: linear-gradient(90deg, rgba(15,4,6,0.9) 0%, rgba(15,4,6,0.6) 50%, rgba(15,4,6,0.2) 100%);
+    background: linear-gradient(90deg, rgba(15,4,6,0.88) 0%, rgba(15,4,6,0.5) 55%, rgba(15,4,6,0.1) 100%);
     display: flex; align-items: center;
     padding: 0 1.5rem; gap: 1.5rem;
-}
-.hero-text { flex: 1; }
-.hero-title {
+}}
+.hero-text {{ flex: 1; }}
+.hero-title {{
     font-family: 'Playfair Display', serif;
-    font-size: clamp(1.4rem, 5vw, 2.4rem);
+    font-size: clamp(1.4rem, 5vw, 2.2rem);
     font-weight: 700; color: #fff;
-    letter-spacing: 0.01em; line-height: 1.15; margin: 0 0 0.4rem;
-}
-.hero-rule { width: 50px; height: 3px; background: #8b1a2f; margin: 0.4rem 0; }
-.hero-author {
-    font-size: 0.8rem; color: rgba(255,255,255,0.75);
-    letter-spacing: 0.08em; text-transform: uppercase;
-}
+    letter-spacing: 0.01em; line-height: 1.1;
+}}
+.hero-rule {{ width: 44px; height: 2px; background: #8b1a2f; margin: 0.4rem 0; }}
+.hero-author {{
+    font-size: 0.78rem; color: rgba(255,255,255,0.7);
+    letter-spacing: 0.1em; text-transform: uppercase;
+}}
 
-/* Tabs - Better mobile */
-.stTabs [data-baseweb="tab-list"] {
+/* Tabs */
+.stTabs [data-baseweb="tab-list"] {{
     background: #fff; border-bottom: 1px solid #e8ddd5;
-    padding: 0 1rem; gap: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-}
-.stTabs [data-baseweb="tab"] {
-    font-size: 0.85rem; font-weight: 500; padding: 1rem 1.2rem;
-    text-transform: uppercase; letter-spacing: 0.06em;
-}
-@media (max-width: 768px) {
-    .stTabs [data-baseweb="tab"] { padding: 0.85rem 0.9rem; font-size: 0.78rem; }
-}
+    padding: 0 1rem;
+}}
+.stTabs [data-baseweb="tab"] {{
+    font-size: 0.85rem; font-weight: 500; padding: 0.9rem 1.2rem;
+}}
+@media (max-width: 768px) {{
+    .stTabs [data-baseweb="tab"] {{ font-size: 0.78rem; padding: 0.75rem 0.9rem; }}
+}}
 
-/* Tab content */
-.tab-content {
-    padding: 1.5rem 2rem 2rem;
+/* Input & Result */
+.input-panel, .result-premium, .result-standard, .explanation-panel {{
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}}
+.tab-content {{
+    padding: 1.5rem 2rem;
     max-width: 1280px; margin: 0 auto;
-}
-@media (max-width: 768px) {
-    .tab-content { padding: 1rem 1.1rem; }
-}
+}}
+@media (max-width: 768px) {{
+    .tab-content {{ padding: 1rem 1rem; }}
+}}
 
-/* Input panel */
-.input-panel {
-    background: #fff; border: 1px solid #e8ddd5;
-    border-radius: 12px; padding: 1.2rem 1.4rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-.panel-header {
-    display: flex; align-items: center; gap: 1rem;
-    margin-bottom: 1rem; padding-bottom: 0.8rem;
-    border-bottom: 1px solid #f0ebe4;
-}
-.panel-header img {
-    width: 55px; height: 55px; border-radius: 8px; object-fit: cover;
-}
-
-/* Sliders & Button */
-.stSlider > label { font-size: 0.82rem !important; font-weight: 500; }
-.stButton > button {
+/* Buttons */
+.stButton > button {{
     background: #8b1a2f !important; color: #fff !important;
     border-radius: 8px !important; font-weight: 600;
-    padding: 0.75rem !important; width: 100%; margin-top: 1rem;
-    text-transform: uppercase; letter-spacing: 0.08em;
-}
-.stButton > button:hover { background: #a02038 !important; }
+    padding: 0.75rem !important; width: 100%;
+}}
+.stButton > button:hover {{ background: #a02038 !important; }}
 
-/* Result cards */
-.result-premium, .result-standard {
-    border-radius: 12px; padding: 1.4rem; text-align: center;
-    margin-bottom: 1rem;
-}
-.result-premium {
-    background: linear-gradient(135deg, #fff5f6 0%, #fff 100%);
-    border: 2px solid #8b1a2f;
-}
-.result-standard {
-    background: #fff; border: 2px solid #d0c8c0;
-}
-.result-label {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.1rem; font-weight: 700; margin-bottom: 0.3rem;
-}
+/* Gauge & Features */
+.gauge-track {{ height: 8px; }}
+.feat-grid {{ grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.6rem; }}
 
-/* Gauge */
-.gauge-track {
-    background: #f0ebe4; border-radius: 99px; height: 8px;
-}
-.gauge-fill { height: 100%; border-radius: 99px; }
-
-/* Feature chips */
-.feat-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;
-    margin-top: 0.8rem;
-}
-@media (max-width: 640px) {
-    .feat-grid { grid-template-columns: 1fr; }
-}
-.feat-chip {
-    background: #faf7f2; border: 1px solid #e8ddd5;
-    border-radius: 8px; padding: 0.5rem 0.8rem;
-}
-
-/* Methodology cards */
-.meth-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+/* Methodology Cards */
+.meth-grid {{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 1rem;
-}
-.meth-card {
-    background: #fff; border: 1px solid #e8ddd5;
-    border-radius: 10px; padding: 1.1rem;
-    border-top: 4px solid #8b1a2f;
-}
-
-/* Footer */
-.app-footer {
-    background: #fff; border-top: 1px solid #e8ddd5;
-    padding: 1rem 2rem; text-align: center;
-    font-size: 0.75rem; color: #9b8c84;
-}
+}}
 </style>
 """, unsafe_allow_html=True)
 
@@ -184,6 +128,9 @@ def load_model():
     except FileNotFoundError:
         st.error("Model files (wine_model.pkl and scaler.pkl) not found.")
         st.stop()
+    except Exception as e:
+        st.error(f"Error loading model: {e}")
+        st.stop()
 
 model, scaler = load_model()
 
@@ -192,7 +139,14 @@ FEATURE_NAMES = [
     "sugar_acid_balance", "so2_efficiency"
 ]
 
-# Dataset means
+# Try to get feature importances safely
+try:
+    importances = model.feature_importances_
+except AttributeError:
+    # Fallback if model doesn't support it (e.g. other classifier)
+    importances = np.ones(len(FEATURE_NAMES)) / len(FEATURE_NAMES)
+
+# ── Dataset means ─────────────────────────────────────────────────────────────
 MEANS = {
     "alcohol": 10.42, "density": 0.9967, "sulphates": 0.658,
     "pH": 3.311, "volatile_acidity": 0.528, "residual_sugar": 2.539,
@@ -226,7 +180,7 @@ def get_food_science_notes(feats):
 
     # Body
     if adr > 12.5:
-        notes.append(("Body", "Full-bodied with excellent structure and weight.", "good"))
+        notes.append(("Body", "Full-bodied with excellent structure and palate weight.", "good"))
     elif adr < 11.0:
         notes.append(("Body", "Light-bodied — may feel thin on the palate.", "warn"))
     else:
@@ -234,17 +188,17 @@ def get_food_science_notes(feats):
 
     # Aroma
     if fi > 9.0:
-        notes.append(("Aroma", "Rich and complex aromatics expected.", "good"))
+        notes.append(("Aroma", "Rich aromatic intensity and complexity.", "good"))
     elif fi < 6.0:
-        notes.append(("Aroma", "Subtle aroma profile — could benefit from more intensity.", "warn"))
+        notes.append(("Aroma", "Subtle aroma — could benefit from more intensity.", "warn"))
     else:
-        notes.append(("Aroma", f"Moderate aromatic intensity ({fi:.2f}).", "neutral"))
+        notes.append(("Aroma", f"Moderate flavour intensity ({fi:.2f}).", "neutral"))
 
     # Acidity
     if aq < 2.0:
-        notes.append(("Acidity", "Clean and well-balanced acidity.", "good"))
+        notes.append(("Acidity", "Clean, fresh acidity with good balance.", "good"))
     elif aq > 3.0:
-        notes.append(("Acidity", "Elevated volatile acidity risk — possible off-notes.", "warn"))
+        notes.append(("Acidity", "Elevated volatile acidity — risk of off-flavours.", "warn"))
     else:
         notes.append(("Acidity", f"Acceptable acidity balance ({aq:.2f}).", "neutral"))
 
@@ -252,13 +206,13 @@ def get_food_science_notes(feats):
     if 1.5 <= so2 <= 3.5:
         notes.append(("Preservation", "Excellent SO₂ efficiency for stability.", "good"))
     elif so2 < 1.5:
-        notes.append(("Preservation", "Higher risk of oxidation or spoilage.", "warn"))
+        notes.append(("Preservation", "Low preservation capacity — oxidation risk.", "warn"))
     else:
-        notes.append(("Preservation", "Very high SO₂ levels — may show sulfur notes.", "warn"))
+        notes.append(("Preservation", "High SO₂ levels — may show sulfur notes.", "warn"))
 
     # Balance
     if sab < 0.3:
-        notes.append(("Balance", "Beautifully dry with great structure.", "good"))
+        notes.append(("Balance", "Well-balanced dry style with great structure.", "good"))
     elif sab > 0.8:
         notes.append(("Balance", "Higher residual sugar relative to acidity.", "warn"))
     else:
@@ -266,9 +220,7 @@ def get_food_science_notes(feats):
 
     return notes
 
-# ══════════════════════════════════════════════════════════════════════════════
-# HERO BANNER
-# ══════════════════════════════════════════════════════════════════════════════
+# HERO
 st.markdown(f"""
 <div class="hero-banner">
     <img src="{IMG['hero']}" alt="Vineyard">
@@ -276,45 +228,38 @@ st.markdown(f"""
         <div class="hero-text">
             <div class="hero-title">Wine Quality Predictor</div>
             <div class="hero-rule"></div>
-            <div class="hero-author">
-                Kavinda Pushpa Kumara • Food Science Student &amp; IBM Certified Data Scientist
-            </div>
+            <div class="hero-author">Kavinda Pushpa Kumara • Food Scientist & Data Scientist</div>
         </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TABS (Only Predict + Methodology)
-# ══════════════════════════════════════════════════════════════════════════════
-tab_predict, tab_method = st.tabs(["  Predict Quality  ", "  Methodology  "])
+# TABS - Only Predict and Methodology
+tab_predict, tab_method = st.tabs(["  Predict  ", "  Methodology  "])
 
-# ──────────────────────────────────────────────────────────────────────────────
-# TAB 1: PREDICT
-# ──────────────────────────────────────────────────────────────────────────────
+# TAB 1 — PREDICT
 with tab_predict:
     st.markdown('<div class="tab-content">', unsafe_allow_html=True)
-    col1, col2 = st.columns([1, 1], gap="large")
+    col_inputs, col_result = st.columns([1, 1], gap="large")
 
-    with col1:
+    with col_inputs:
         st.markdown(f"""
-        <div class="input-panel">
-            <div class="panel-header">
-                <img src="{IMG['pour']}" alt="Wine pour">
+        <div class="input-panel" style="background:#fff; padding:1.2rem; border:1px solid #e8ddd5;">
+            <div style="display:flex; align-items:center; gap:0.8rem; margin-bottom:1rem;">
+                <img src="{IMG['pour']}" style="width:48px;height:48px;border-radius:8px;" alt="Pour">
                 <div>
-                    <h3 style="margin:0; font-family:'Playfair Display',serif;">Raw Chemical Measurements</h3>
-                    <p style="margin:0; color:#9b8c84; font-size:0.85rem;">Enter your lab values below</p>
+                    <strong style="font-size:1.05rem;">Raw Chemical Measurements</strong><br>
+                    <small style="color:#9b8c84;">Enter lab values — features engineered automatically</small>
                 </div>
             </div>
         """, unsafe_allow_html=True)
 
         c1, c2 = st.columns(2)
         with c1:
-            alcohol = st.slider("Alcohol (% vol)", 8.0, 15.0, float(MEANS["alcohol"]), 0.1)
+            alcohol = st.slider("Alcohol (%vol)", 8.0, 15.0, float(MEANS["alcohol"]), 0.1)
             sulphates = st.slider("Sulphates (g/dm³)", 0.30, 2.00, float(MEANS["sulphates"]), 0.01)
             pH = st.slider("pH", 2.70, 4.50, float(MEANS["pH"]), 0.01)
             residual_sugar = st.slider("Residual Sugar (g/dm³)", 1.0, 16.0, float(MEANS["residual_sugar"]), 0.1)
-
         with c2:
             density = st.slider("Density (g/cm³)", 0.990, 1.004, float(MEANS["density"]), 0.0001, format="%.4f")
             volatile_acidity = st.slider("Volatile Acidity (g/dm³)", 0.10, 1.60, float(MEANS["volatile_acidity"]), 0.01)
@@ -322,87 +267,89 @@ with tab_predict:
             free_so2 = st.slider("Free SO₂ (mg/dm³)", 1.0, 72.0, float(MEANS["free_sulfur_dioxide"]), 0.5)
 
         st.markdown("</div>", unsafe_allow_html=True)
-        predict_btn = st.button("🔬 Analyse This Wine", use_container_width=True, type="primary")
+        predict_btn = st.button("Analyse This Wine", use_container_width=True, type="primary")
 
-    with col2:
-        feats = engineer_features(alcohol, density, sulphates, pH, volatile_acidity,
-                                  residual_sugar, fixed_acidity, free_so2)
+    with col_result:
+        feats = engineer_features(alcohol, density, sulphates, pH, volatile_acidity, residual_sugar, fixed_acidity, free_so2)
 
         if predict_btn:
             label, prob, scaled_vals = make_prediction(feats)
             st.session_state["last_label"] = label
             st.session_state["last_prob"] = prob
+            st.session_state["last_scaled"] = scaled_vals
             st.session_state["last_feats"] = feats
+            st.session_state["show_explanation"] = False
 
         if "last_prob" in st.session_state:
             label = st.session_state["last_label"]
             prob = st.session_state["last_prob"]
+            scaled_vals = st.session_state["last_scaled"]
             feats_saved = st.session_state["last_feats"]
 
             if label == 1:
                 st.markdown(f"""
-                <div class="result-premium">
-                    <div class="result-label" style="color:#8b1a2f;">Premium Quality</div>
-                    <div style="font-size:0.95rem;color:#555;">Predicted quality ≥ 7</div>
-                    <div class="gauge-wrap" style="margin:1rem 0;">
-                        <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:#777;margin-bottom:4px;">
-                            <span>Standard</span>
-                            <span><strong>{prob*100:.1f}%</strong> Confidence</span>
-                            <span>Premium</span>
+                <div style="background:linear-gradient(135deg,#fff5f6 0%,#fff 100%); border:2px solid #8b1a2f; border-radius:12px; padding:1.5rem; text-align:center;">
+                    <div style="font-size:2.1rem; font-weight:700; color:#8b1a2f;">Premium Quality</div>
+                    <div style="color:#8b1a2f; margin:0.4rem 0;">Quality ≥ 7 predicted</div>
+                    <div style="margin:1rem 0;">
+                        <div style="font-size:0.8rem; color:#666;">Confidence</div>
+                        <div style="height:10px; background:#e8ddd5; border-radius:999px; overflow:hidden;">
+                            <div style="width:{prob*100:.1f}%; height:100%; background:#8b1a2f;"></div>
                         </div>
-                        <div class="gauge-track"><div class="gauge-fill" style="width:{prob*100:.1f}%; background:#8b1a2f;"></div></div>
+                        <div style="text-align:right; font-weight:600; margin-top:4px;">{prob*100:.1f}%</div>
                     </div>
                 </div>""", unsafe_allow_html=True)
-                st.success("This wine shows the chemical signature of a premium bottle.")
             else:
                 conf = (1 - prob) * 100
                 st.markdown(f"""
-                <div class="result-standard">
-                    <div class="result-label" style="color:#5c4a3a;">Standard Quality</div>
-                    <div style="font-size:0.95rem;color:#555;">Predicted quality &lt; 7</div>
-                    <div class="gauge-wrap" style="margin:1rem 0;">
-                        <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:#777;margin-bottom:4px;">
-                            <span>Standard</span>
-                            <span><strong>{conf:.1f}%</strong> Confidence</span>
-                            <span>Premium</span>
+                <div style="background:#fff; border:2px solid #d0c8c0; border-radius:12px; padding:1.5rem; text-align:center;">
+                    <div style="font-size:2.1rem; font-weight:700; color:#5c4a3a;">Standard Quality</div>
+                    <div style="margin:0.4rem 0;">Quality < 7 predicted</div>
+                    <div style="margin:1rem 0;">
+                        <div style="font-size:0.8rem; color:#666;">Confidence</div>
+                        <div style="height:10px; background:#e8ddd5; border-radius:999px; overflow:hidden;">
+                            <div style="width:{prob*100:.1f}%; height:100%; background:#b0a8a0;"></div>
                         </div>
-                        <div class="gauge-track"><div class="gauge-fill" style="width:{prob*100:.1f}%; background:#b0a8a0;"></div></div>
+                        <div style="text-align:right; font-weight:600; margin-top:4px;">{conf:.1f}% Non-Premium</div>
                     </div>
                 </div>""", unsafe_allow_html=True)
-                st.warning("This wine falls into the standard quality category.")
 
-            # Explanation
             if st.button("Explain This Prediction", use_container_width=True):
-                st.session_state["show_exp"] = True
+                st.session_state["show_explanation"] = not st.session_state.get("show_explanation", False)
 
-            if st.session_state.get("show_exp", False):
-                st.subheader("Why this prediction?")
-                contributions = model.feature_importances_ * scaled_vals
+            if st.session_state.get("show_explanation", False):
+                st.markdown('<div class="explanation-panel" style="background:#fff; padding:1.2rem; margin-top:1rem;">', unsafe_allow_html=True)
+
+                st.subheader("Feature Contributions")
+                contributions = importances * scaled_vals
                 contrib_df = pd.DataFrame({
                     "Feature": FEATURE_NAMES,
-                    "Contribution": contributions
+                    "Contribution": contributions,
                 }).sort_values("Contribution", key=abs, ascending=True)
 
-                fig, ax = plt.subplots(figsize=(6, 3))
                 colors = ["#8b1a2f" if v >= 0 else "#b0a8a0" for v in contrib_df["Contribution"]]
+
+                fig, ax = plt.subplots(figsize=(6, 2.8))
                 ax.barh(contrib_df["Feature"], contrib_df["Contribution"], color=colors)
-                ax.axvline(0, color="#ddd", lw=1)
+                ax.axvline(0, color="#ddd", linewidth=1)
                 ax.set_xlabel("Contribution to Prediction")
                 st.pyplot(fig, use_container_width=True)
                 plt.close()
 
-                # Food science notes
-                st.subheader("Winemaker's Perspective")
+                st.subheader("Food Science Interpretation")
                 notes = get_food_science_notes(feats_saved)
                 for aspect, text, tone in notes:
-                    color = "#e8f5ee" if tone == "good" else "#fdf0f2" if tone == "warn" else "#f9f6f0"
+                    color = "#e8f5ee" if tone == "good" else "#fdf0f2" if tone == "warn" else "#faf7f2"
                     st.markdown(f"""
-                    <div style="background:{color}; padding:0.9rem; border-radius:8px; margin:0.5rem 0; border-left:4px solid {'#4a7c59' if tone=='good' else '#8b1a2f'}">
+                    <div style="background:{color}; padding:0.9rem; border-radius:8px; margin-bottom:0.6rem; border-left:4px solid {'#4a7c59' if tone=='good' else '#8b1a2f'}">
                         <strong>{aspect}:</strong> {text}
-                    </div>""", unsafe_allow_html=True)
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                st.markdown('</div>', unsafe_allow_html=True)
 
         else:
-            st.info("Adjust the values on the left and click **Analyse This Wine** to get a prediction.")
+            st.info("Adjust the sliders on the left and click **Analyse This Wine** to get a prediction.")
 
         # Engineered Features
         st.subheader("Engineered Features")
@@ -410,85 +357,63 @@ with tab_predict:
             "alcohol_density_ratio": "Alcohol / Density",
             "flavor_intensity": "Flavour Intensity",
             "acidity_quality": "Acidity Quality",
-            "sugar_acid_balance": "Sugar-Acid Balance",
-            "so2_efficiency": "SO₂ Efficiency"
+            "sugar_acid_balance": "Sugar / Acid Balance",
+            "so2_efficiency": "SO₂ Efficiency",
         }
-        chips = '<div class="feat-grid">'
-        for k, v in feats.items():
-            chips += f'<div class="feat-chip"><strong>{feat_labels[k]}</strong><br><span style="font-family:monospace;">{v:.4f}</span></div>'
-        chips += '</div>'
-        st.markdown(chips, unsafe_allow_html=True)
+        cols = st.columns(2)
+        for i, (k, v) in enumerate(feats.items()):
+            with cols[i % 2]:
+                st.metric(feat_labels[k], f"{v:.4f}")
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ──────────────────────────────────────────────────────────────────────────────
-# TAB 2: METHODOLOGY (Humanized & Professional)
-# ──────────────────────────────────────────────────────────────────────────────
+# TAB 2 — METHODOLOGY (Humanized & Professional)
 with tab_method:
     st.markdown('<div class="tab-content">', unsafe_allow_html=True)
 
     st.markdown(f"""
     <div style="position:relative; height:140px; border-radius:12px; overflow:hidden; margin-bottom:1.5rem;">
-        <img src="{IMG['cellar']}" style="width:100%; height:100%; object-fit:cover; opacity:0.7;">
-        <div style="position:absolute; inset:0; background:linear-gradient(transparent, rgba(26,10,14,0.85)); display:flex; align-items:flex-end; padding:1.5rem;">
-            <div>
-                <h2 style="color:white; margin:0; font-family:'Playfair Display',serif;">The Science Behind the Prediction</h2>
-                <p style="color:#ddd; margin:0.4rem 0 0;">Turning chemistry into winemaking wisdom</p>
+        <img src="{IMG['cellar']}" style="width:100%;height:100%;object-fit:cover;opacity:0.75;">
+        <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,4,6,0.75),rgba(15,4,6,0.2)); display:flex;align-items:center;padding:0 2rem;">
+            <div style="color:white;">
+                <h2 style="margin:0; font-size:1.8rem;">The Science Behind the Prediction</h2>
+                <p style="margin:0.5rem 0 0; opacity:0.9; max-width:600px;">Five carefully chosen chemical relationships that winemakers have used for generations to judge quality.</p>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown("""
-    <p style="font-size:1.05rem; line-height:1.7; color:#444;">
-        Great wine is more than just numbers — it's the careful balance of chemistry, craftsmanship, and nature.
-        This predictor uses five thoughtfully engineered features that winemakers and food scientists use every day to evaluate quality.
-    </p>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:1.2rem;">
     """, unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="meth-grid">
-      <div class="meth-card">
-        <strong style="color:#8b1a2f; font-size:1.1rem;">Alcohol / Density Ratio</strong>
-        <p><em>Body &amp; Mouthfeel</em></p>
-        <p>This ratio tells us how full and structured the wine feels. Higher alcohol relative to density usually means richer extract and a more satisfying weight on the palate — a hallmark of quality reds.</p>
-      </div>
-      <div class="meth-card">
-        <strong style="color:#8b1a2f; font-size:1.1rem;">Flavour Intensity</strong>
-        <p><em>Aroma &amp; Complexity</em></p>
-        <p>Calculated as sulphates × alcohol. Sulphates help preserve delicate aromas while alcohol helps extract them. This feature captures the aromatic potential of the wine.</p>
-      </div>
-      <div class="meth-card">
-        <strong style="color:#8b1a2f; font-size:1.1rem;">Acidity Quality</strong>
-        <p><em>Fault Prevention</em></p>
-        <p>Volatile acidity (the vinegar note) multiplied by pH. This helps flag wines that might have off-flavours. Lower values mean cleaner, more elegant acidity.</p>
-      </div>
-      <div class="meth-card">
-        <strong style="color:#8b1a2f; font-size:1.1rem;">Sugar / Acid Balance</strong>
-        <p><em>Harmony on the Palate</em></p>
-        <p>Residual sugar relative to fixed acidity. Quality dry reds usually show a low ratio — creating that refreshing, structured finish we all love.</p>
-      </div>
-      <div class="meth-card">
-        <strong style="color:#8b1a2f; font-size:1.1rem;">SO₂ Efficiency</strong>
-        <p><em>Preservation &amp; Stability</em></p>
-        <p>Free sulfur dioxide normalized by alcohol. The right balance protects the wine from oxidation and spoilage without leaving unpleasant sulfur notes.</p>
-      </div>
-    </div>
-    """, unsafe_allow_html=True)
+    meth_cards = [
+        ("Alcohol / Density", "alcohol ÷ density", "This ratio reflects how much extract and body the wine has. Higher alcohol relative to density usually means a fuller, more structured wine.", "Higher values = richer mouthfeel"),
+        ("Flavour Intensity", "sulphates × alcohol", "Sulphates help preserve delicate aromas while alcohol extracts them from the grape skins. Their combination tells us about aromatic potential.", "Higher = more aromatic complexity"),
+        ("Acidity Quality", "pH × volatile acidity", "Volatile acidity can turn into vinegar if too high. Multiplying by pH helps flag wines at risk of spoilage or sharpness.", "Lower = cleaner, fresher taste"),
+        ("Sugar / Acid Balance", "residual sugar ÷ fixed acidity", "The classic balance between sweetness and structure. Quality dry reds usually sit in a tight, harmonious range.", "Lower = more structured & dry"),
+        ("SO₂ Efficiency", "free SO₂ ÷ alcohol", "How effectively the wine is protected against oxidation and bacteria. Too little risks spoilage; too much can leave unpleasant notes.", "Ideal range: 1.5 – 3.5")
+    ]
 
-    st.markdown("""
-    <p style="margin-top:2rem; font-size:0.9rem; color:#777; line-height:1.6;">
-        <strong>Trained on 1,599 real Portuguese red wines.</strong> The model achieved 91.6% accuracy and strong performance on identifying premium bottles (quality 7+).
-        This tool is designed to support winemakers, sommeliers, and wine enthusiasts in understanding what makes a wine exceptional.
-    </p>
-    """, unsafe_allow_html=True)
+    for title, formula, desc, direction in meth_cards:
+        st.markdown(f"""
+        <div style="background:white; border:1px solid #e8ddd5; border-radius:10px; padding:1.2rem;">
+            <div style="font-family:monospace; background:#fdf0f2; color:#8b1a2f; padding:0.2rem 0.5rem; border-radius:4px; display:inline-block; font-size:0.8rem;">{formula}</div>
+            <h3 style="margin:0.8rem 0 0.4rem; color:#2c2118;">{title}</h3>
+            <p style="color:#5c4a3a; line-height:1.55;">{desc}</p>
+            <small style="color:#8b1a2f; font-weight:500;">{direction}</small>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    st.info("This model was trained on 1,599 real Portuguese red wines using scientifically meaningful feature engineering.")
 
     st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer
 st.markdown("""
-<div class="app-footer">
-    Wine Quality Predictor • Kavinda Pushpa Kumara • Built with ❤️ for wine lovers
+<div style="text-align:center; padding:1.5rem; color:#9b8c84; font-size:0.8rem; border-top:1px solid #e8ddd5; margin-top:2rem;">
+    Wine Quality Predictor — Kavinda Pushpa Kumara • Built with care for wine lovers and winemakers
 </div>
 """, unsafe_allow_html=True)
-""
