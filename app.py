@@ -1,20 +1,3 @@
-"""
-Wine Quality Prediction — Streamlit Application
-Author : Kavinda Pushpa Kumara
-Role   : Food Science Student | IBM Certified Data Scientist
-
-Exact model metrics from notebook (wine_quality_prediction_eng_feat.ipynb):
-  Accuracy  : 91.56%
-  F1 Score  : 0.710
-  AUC-ROC   : 0.951
-  Avg Prec  : from notebook cell 8
-  Baseline  : 86.4% accuracy, 0.00 F1
-  Raw model : 90.00% accuracy, 0.686 F1, 0.927 AUC
-  Dataset   : 1599 wines, 14.0% premium (quality >= 7)
-  Train/Test: 80/20 stratified split
-  CV        : 5-fold, scored on F1
-"""
-
 import joblib
 import numpy as np
 import pandas as pd
@@ -54,7 +37,7 @@ html, body, [class*="css"] {
 .stApp { background: #faf7f2; }
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stSidebar"] { display: none; }
-.block-container { padding: 0 !important; max-width: 100% !important; }
+.block-container { padding: 0 !important; max-width: 800px; margin: 0 auto; }
 
 /* Safe area for notched phones */
 .stApp > div:first-child { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
@@ -649,7 +632,7 @@ with tab_predict:
                 <img src="{IMG['pour']}" alt="Wine being poured">
                 <div>
                     <div class="ph-title">Raw Chemical Measurements</div>
-                    <div class="ph-sub">Enter lab values &mdash; features are engineered automatically</div>
+                    <div class="ph-sub">Enter lab values </div>
                 </div>
             </div>
         """, unsafe_allow_html=True)
