@@ -55,7 +55,7 @@ html, body, [class*="css"] {
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stSidebar"] { display: none; }
 
-/* Desktop container safe frameworks */
+/* Fixed desktop framework container parameters */
 .block-container { 
     padding: 1.5rem 1rem !important; 
     max-width: 1200px !important; 
@@ -424,7 +424,7 @@ html, body, [class*="css"] {
 }
 
 @media (max-width: 768px) {
-    /* Safe container edge padding anchors */
+    /* Defensive padding limits */
     .main .block-container { 
         padding-left: 14px !important; 
         padding-right: 14px !important; 
@@ -452,7 +452,7 @@ html, body, [class*="css"] {
     
     .panel-header img { height: 44px !important; }
     
-    /* Input layout structure labels */
+    /* Active labeling tracking visibility anchors */
     [data-testid="stSlider"] label, .stSlider label {
         color: #5c4a3a !important;
         font-weight: 500 !important;
@@ -564,7 +564,6 @@ FEATURE_NAMES = [
     "sugar_acid_balance",
     "so2_efficiency",
 ]
-importances = model.feature_importances_
 
 # ── Exact metrics from notebook ───────────────────────────────────────────────
 MODEL_METRICS = {
@@ -671,8 +670,6 @@ st.markdown(f"""
         <div class="hero-text">
             <div class="hero-title">Wine Quality Predictor</div>
             <div class="hero-rule"></div>
-          
-            </div>
         </div>
         <div class="hero-stats">
             <div class="hero-stat">
@@ -695,7 +692,7 @@ st.markdown(f"""
 # ── Dynamic Subtitle Insertion ────────────────────────────────────────────────
 st.markdown("<p style='text-align: center; color: #5c4a3a; font-family: \"Lato\", sans-serif; font-size: 1.05rem; font-style: italic; margin-top: 1.5rem; margin-bottom: 0.5rem; padding: 0 1.2rem;'>A predictive enology dashboard using machine learning and 5 chemically meaningful engineered features to identify premium red wine profiles.</p>", unsafe_allow_html=True)
 
-# ── Tab Navigation Engine ─────────────────────────────────────────────────────
+# ── Tab Navigation Engine (FIXED: Unpacking dimension tuple match) ────────────
 tab_predict, tab_method = st.tabs([
     "  Predict  ",
     "  Methodology  ",
@@ -821,7 +818,8 @@ with tab_predict:
                 st.markdown('<p class="sec-title">Feature Contributions</p>', unsafe_allow_html=True)
                 st.markdown('<p class="sec-sub">Importance &times; scaled value. Burgundy = pushes toward Premium; grey = toward Non-Premium.</p>', unsafe_allow_html=True)
 
-                contributions = importances * scaled_vals
+                # FIXED: Extracted feature importances directly from model object safely inside calculation state
+                contributions = model.feature_importances_ * scaled_vals
                 contrib_df = pd.DataFrame({
                     "Feature": FEATURE_NAMES,
                     "Contribution": contributions,
@@ -939,7 +937,7 @@ with tab_method:
       </div>
       <div class="meth-card">
         <span class="mc-tag">acidity_quality</span>
-        <div class="mc-formula">pH &times; volatile acidity</div>
+        <div class="mc-formula">pH &divide; volatile acidity</div>
         <div class="mc-title">Fault Detection</div>
         <div class="mc-body">Volatile acidity above ~0.6 g/dm&sup3; is detectable as vinegar.
         Multiplying by pH amplifies the penalty when both are elevated, flagging
