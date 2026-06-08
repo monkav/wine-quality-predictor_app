@@ -469,40 +469,46 @@ html, body, [class*="css"] {
     }
 }
 
-/* ── Mobile polish fixes ── */
-html, body { overflow-x: hidden; }
-.block-container { padding-left: 0 !important; padding-right: 0 !important; }
-
-/* Ensure tab content has safe side padding on phones */
+/* ── Mobile edge-to-edge fix ── */
 @media (max-width: 768px) {
-  .tab-content { padding: 0.9rem 0.9rem 1.2rem !important; }
-  .input-panel { padding: 0.9rem 0.9rem 0.6rem !important; border-radius: 10px; }
-  /* Give sliders breathing room */
-  [data-testid="stSlider"] { padding: 0 0.1rem; }
-  .stSlider > label { margin-bottom: 0.25rem !important; }
-  /* Prevent edge-to-edge */
-  [data-testid="column"] { padding: 0 0.1rem; }
-  /* Bottom safe area so button isn't hidden */
-  .main .block-container { padding-bottom: 90px !important; }
-  /* Hide Streamlit cloud floating buttons */
-  [data-testid="stToolbar"], [data-testid="stDecoration"], [data-testid="stStatusWidget"],
-  .stAppDeployButton, button[kind="header"], div[data-testid="stAppViewBlockContainer"] > div > div > button {
-    display: none !important;
+  .main .block-container { padding-left: 12px !important; padding-right: 12px !important; }
+  .tab-content {
+    background: #ffffff !important;
+    border-radius: 14px !important;
+    padding: 12px !important;
+    margin: 8px 0 16px 0 !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04) !important;
   }
-  /* Make Analyse button sticky and full width */
-  .stButton > button {
-    position: sticky;
-    bottom: 12px;
-    z-index: 999;
-    box-shadow: 0 4px 12px rgba(139,26,47,0.25);
+  .input-panel {
+    background: #ffffff !important;
+    border: 1px solid #e8ddd5 !important;
+    border-radius: 12px !important;
+    padding: 14px 12px 10px !important;
+    margin: 0 0 12px 0 !important;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.05) !important;
   }
+  .panel-header img { height: 44px !important; }
+  /* Ensure slider labels are dark and not cut off */
+  [data-testid="stSlider"] label, .stSlider label {
+    color: #5c4a3a !important;
+    font-weight: 500 !important;
+    font-size: 0.85rem !important;
+    white-space: normal !important;
+  }
+  /* Prevent edge bleed */
+  [data-testid="column"] { padding-left: 4px !important; padding-right: 4px !important; }
 }
 
-/* Tighter spacing for very small screens */
-@media (max-width: 480px) {
-  .tab-content { padding: 0.75rem 0.75rem 1rem !important; }
-  .input-panel { padding: 0.8rem 0.8rem 0.5rem !important; }
-  .stSlider > label { font-size: 0.72rem !important; }
+/* Fix white-on-light text */
+.stSuccess, .stInfo, .stWarning, .stError {
+  color: #2c2118 !important;
+}
+.stSuccess div, .stInfo div, .stWarning div, .stError div {
+  color: #2c2118 !important;
+}
+/* Ensure any light yellow backgrounds have dark text */
+[style*="#faf7f2"], [style*="#fffdf6"] {
+  color: #5c4a3a !important;
 }
 
 </style>
