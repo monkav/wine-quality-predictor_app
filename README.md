@@ -26,7 +26,7 @@ The model is deployed as a **Streamlit web app** where users adjust chemical par
 - [Engineered Features](#engineered-features)
 - [Model & Methodology](#model--methodology)
 - [App Features](#app-features)
-- [App Screenshot](#app-screenshot)
+- [App Screenshot](#app-demo)
 - [Results](#results)
 - [References](#references)
 - [License](#license)
@@ -74,7 +74,7 @@ The model is deployed as a **Streamlit web app** where users adjust chemical par
 | Scientific methodology | Full winemaking rationale for each engineered feature |
 | Model transparency | Dataset, algorithm, limitations and threshold guidance disclosed |
 
-## Demo
+## App Demo
 
 ![App Screenshot](assets/app_screenshot.png)
 *Interactive sliders with instant prediction and feature contributions*
