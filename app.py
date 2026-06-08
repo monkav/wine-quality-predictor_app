@@ -673,10 +673,8 @@ st.markdown(f"""
         <div class="hero-text">
             <div class="hero-title">Wine Quality Predictor</div>
             <div class="hero-rule"></div>
-            <div class="hero-author">
-                Kavinda Pushpa Kumara &nbsp;&middot;&nbsp;
-                Food Science Student &nbsp;&middot;&nbsp;
-                IBM Certified Data Scientist
+            <div class="hero-desc">
+                Leveraging a tuned Random Forest model on the UCI Red Wine dataset, this app translates physicochemical proxies into actionable quality predictions for rapid winery screening
             </div>
         </div>
         <div class="hero-stats">
@@ -703,7 +701,6 @@ st.markdown(f"""
 # ═══════════════════════════════════════════════════════════════════════════════
 tab_predict, tab_insights, tab_method = st.tabs([
     "  Predict  ",
-    "  Model Insights  ",
     "  Methodology  ",
 ])
 
@@ -724,7 +721,7 @@ with tab_predict:
                 <img src="{IMG['pour']}" alt="Wine being poured">
                 <div>
                     <div class="ph-title">Raw Chemical Measurements</div>
-                    <div class="ph-sub">Enter lab values &mdash; features are engineered automatically</div>
+                    <div class="ph-sub">Enter lab values</div>
                 </div>
             </div>
         """, unsafe_allow_html=True)
@@ -888,7 +885,7 @@ with tab_predict:
 
         # Feature Grid Chips
         st.markdown('<p class="sec-title">Engineered Features</p>', unsafe_allow_html=True)
-        st.markdown('<p class="sec-sub">Calculated live from your inputs. These are the 5 values the model actually receives.</p>', unsafe_allow_html=True)
+        st.markdown('<p class="sec-sub">Calculated live from your inputs.</p>', unsafe_allow_html=True)
         feat_labels = {
             "alcohol_density_ratio": "Alcohol / Density",
             "flavor_intensity":      "Flavour Intensity",
@@ -906,151 +903,6 @@ with tab_predict:
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# TAB 2 — MODEL INSIGHTS
-# ═══════════════════════════════════════════════════════════════════════════════
-with tab_insights:
-    st.markdown('<div class="tab-content">', unsafe_allow_html=True)
-
-    st.markdown(f"""
-    <div class="metrics-strip">
-      <div class="metric-card">
-        <span class="mc-label">Accuracy</span>
-        <div class="mc-val">91.6%</div>
-        <span class="mc-note">Test set &middot; 320 wines</span>
-      </div>
-      <div class="metric-card">
-        <span class="mc-label">F1 Score (Premium)</span>
-        <div class="mc-val">0.710</div>
-        <span class="mc-note">Harmonic mean P&amp;R</span>
-      </div>
-      <div class="metric-card">
-        <span class="mc-label">AUC-ROC</span>
-        <div class="mc-val">0.951</div>
-        <span class="mc-note">Discriminatory power</span>
-      </div>
-      <div class="metric-card secondary">
-        <span class="mc-label">Baseline Accuracy</span>
-        <div class="mc-val secondary">86.4%</div>
-        <span class="mc-note">Majority-class dummy</span>
-      </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    ins_left, ins_right = st.columns([3, 2], gap="large")
-
-    with ins_left:
-        st.markdown('<p class="sec-title">Global Feature Importances</p>', unsafe_allow_html=True)
-        st.markdown('<p class="sec-sub">Mean decrease in Gini impurity across all 100+ decision trees. Higher = more influential globally across all 1,599 wines.</p>', unsafe_allow_html=True)
-
-        imp_df = pd.DataFrame({
-            "Feature": FEATURE_NAMES,
-            "Importance": importances,
-        }).sort_values("Importance", ascending=True)
-
-        max_imp = imp_df["Importance"].max()
-        bar_colors = []
-        for v in imp_df["Importance"]:
-            t = 0.3 + 0.7 * (v / max_imp)
-            bar_colors.append((0.545*t + (1-t), 0.102*t + (1-t), 0.184*t + (1-t)))
-
-        fig2, ax2 = plt.subplots(figsize=(6, 2.8))
-        fig2.patch.set_facecolor("#faf7f2")
-        ax2.set_facecolor("#faf7f2")
-        ax2.barh(imp_df["Feature"], imp_df["Importance"],
-                 color=bar_colors, height=0.5, edgecolor="none")
-        for i, (_, row) in enumerate(imp_df.iterrows()):
-            ax2.text(row["Importance"] + 0.003, i,
-                     f'{row["Importance"]:.3f}', va="center", color="#5c4a3a", fontsize=8.5)
-        for sp in ax2.spines.values(): sp.set_visible(False)
-        ax2.tick_params(colors="#5c4a3a", labelsize=8.5)
-        ax2.set_xlabel("Mean Decrease in Gini Impurity", fontsize=8, color="#9b8c84")
-        ax2.set_xlim(0, max_imp + 0.07)
-        st.pyplot(fig2, use_container_width=True)
-        plt.close()
-
-        st.markdown('<p class="sec-title" style="margin-top:0.9rem;">Model Comparison</p>', unsafe_allow_html=True)
-        st.markdown('<p class="sec-sub">Exact results from the held-out test set (320 wines, stratified 80/20 split).</p>', unsafe_allow_html=True)
-        st.markdown(f"""
-        <table class="cmp-table">
-          <thead>
-            <tr>
-              <th>Model</th>
-              <th>Accuracy</th>
-              <th>F1 (Premium)</th>
-              <th>AUC-ROC</th>
-              <th>Avg Precision</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Baseline (majority class)</td>
-              <td>86.4%</td>
-              <td>0.000</td>
-              <td>0.500</td>
-              <td>14.0%</td>
-            </tr>
-            <tr>
-              <td>5 Raw features (RF)</td>
-              <td>90.0%</td>
-              <td>0.686</td>
-              <td>0.927</td>
-              <td>78.5%</td>
-            </tr>
-            <tr class="highlight-row">
-              <td><strong>5 Engineered features (RF)</strong></td>
-              <td class="best">91.6%</td>
-              <td class="best">0.710</td>
-              <td class="best">0.951</td>
-              <td class="best">{MODEL_METRICS['avg_prec']*100:.2f}%</td>
-            </tr>
-          </tbody>
-        </table>
-        <div style="font-size:0.68rem;color:#9b8c84;margin-top:0.5rem;">
-          Note: accuracy alone is misleading at 14% class balance &mdash;
-          F1, AUC-ROC, and Average Precision are the meaningful metrics.
-        </div>
-        """, unsafe_allow_html=True)
-
-    with ins_right:
-        st.markdown(f"""
-        <div class="img-strip">
-            <div class="img-card">
-                <img src="{IMG['vineyard']}" alt="Vineyard">
-                <div class="img-label">1,599 Red Wines &middot; UCI Dataset</div>
-            </div>
-            <div class="img-card">
-                <img src="{IMG['lab']}" alt="Laboratory">
-                <div class="img-label">Random Forest &middot; 5-Fold CV</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        st.markdown('<p class="sec-title">Model Transparency</p>', unsafe_allow_html=True)
-        st.markdown("""
-        <div class="transp-box">
-          <h4>Dataset</h4>
-          UCI Red Wine Quality &mdash; 1,599 Portuguese Vinho Verde red wines.
-          80/20 stratified train/test split (1,279 train, 320 test).
-
-          <h4>Algorithm</h4>
-          Random Forest with <code>class_weight='balanced'</code>. SMOTE applied
-          inside each fold via <code>imblearn.Pipeline</code> to prevent leakage.
-          Tuned with 5-fold GridSearchCV on F1 score.
-
-          <h4>Class Imbalance</h4>
-          14.0% premium wines. Baseline accuracy of 86.4% is achieved by predicting
-          Non-Premium every time &mdash; F1 = 0.00. This model achieves F1 = 0.710.
-
-          <h4>Threshold</h4>
-          Default: 0.50. Raising it (e.g. 0.65) increases precision and reduces
-          false Premium labels &mdash; useful when mislabelling has a cost.
-        </div>
-        """, unsafe_allow_html=True)
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-
-# ═══════════════════════════════════════════════════════════════════════════════
 # TAB 3 — METHODOLOGY
 # ═══════════════════════════════════════════════════════════════════════════════
 with tab_method:
@@ -1062,8 +914,7 @@ with tab_method:
         <div class="meth-hero-overlay">
             <div class="meth-hero-text">
                 <h2>Scientific Methodology</h2>
-                <p>Five chemically meaningful ratios engineered from raw lab measurements &mdash;
-                each encoding a winemaking principle used to assess quality.</p>
+                <p>Five chemically meaningful ratios engineered from raw lab measurements. Each of these features encode winemaking principle used to assess quality.</p>
             </div>
         </div>
     </div>
@@ -1131,10 +982,9 @@ with tab_method:
 
 
 # ── Footer Presentation ───────────────────────────────────────────────────────
+# ── Footer ────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="app-footer">
-    Wine Quality Predictor &nbsp;&middot;&nbsp; Kavinda Pushpa Kumara
-    &nbsp;&middot;&nbsp; Food Science &amp; Data Science Portfolio
-    &nbsp;&middot;&nbsp; UCI Red Wine Dataset &middot; 1,599 Wines
+    Kavinda Pushpa Kumara &nbsp;&middot;&nbsp; Food Science Student &amp; Aspiring Data Scientist
 </div>
 """, unsafe_allow_html=True)
