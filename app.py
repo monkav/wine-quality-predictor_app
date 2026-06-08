@@ -522,16 +522,27 @@ html, body, [class*="css"] {
     }
 }
 
-/* Fix white-on-light text rendering bugs */
+/* Fix white-on-light text rendering bugs by forcing dark text inside all result boxes */
+.result-premium, .result-standard, .explanation-panel, .feat-chip, .transp-box, .meth-card {
+    color: #2c2118 !important;
+}
+
+/* Force dark text inside your dynamic food science analysis boxes */
+.explanation-panel div {
+    color: #2c2118 !important;
+}
+
 .stSuccess, .stInfo, .stWarning, .stError {
     color: #2c2118 !important;
 }
+
 .stSuccess div, .stInfo div, .stWarning div, .stError div {
     color: #2c2118 !important;
 }
-/* Metric backgrounds protect dark text properties */
-[style*="#faf7f2"], [style*="#fffdf6"] {
-    color: #5c4a3a !important;
+
+/* Ensure light background panels protect dark text metrics strictly */
+[style*="background"] {
+    color: #2c2118 !important;
 }
 </style>
 """, unsafe_allow_html=True)
