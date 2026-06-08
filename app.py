@@ -2,7 +2,7 @@
 Wine Quality Prediction — Streamlit Application
 Author : Kavinda Pushpa Kumara
 Role   : Food Science Student | IBM Certified Data Scientist
-Mobile-Responsive Redesign
+Mobile-Responsive Redesign (preserving original design)
 """
 
 import joblib
@@ -20,15 +20,12 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# ── CSS — fully mobile-responsive, warm ivory theme ─────────────────────────
+# ── CSS — fully mobile-responsive, preserving original theme ─────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;500&display=swap');
 
-* {
-    box-sizing: border-box;
-}
-
+/* Reset & base */
 html, body, [class*="css"] {
     font-family: 'Lato', sans-serif;
     background-color: #faf7f2;
@@ -36,12 +33,12 @@ html, body, [class*="css"] {
 }
 .stApp {
     background: #faf7f2;
+    max-width: 100%;
 }
 
-/* Hide default Streamlit elements */
+/* Hide default Streamlit chrome */
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stSidebar"] { display: none; }
-
 .block-container {
     padding: 0 !important;
     max-width: 100% !important;
@@ -73,6 +70,7 @@ html, body, [class*="css"] {
     font-size: 1.2rem;
     font-weight: 700;
     color: #8b1a2f;
+    letter-spacing: 0.01em;
 }
 .top-bar-meta {
     font-size: 0.65rem;
@@ -82,7 +80,7 @@ html, body, [class*="css"] {
     line-height: 1.3;
 }
 
-/* Tabs — mobile friendly */
+/* Tab nav — responsive wrap */
 .stTabs [data-baseweb="tab-list"] {
     background: #fff;
     border-bottom: 1px solid #e8ddd5;
@@ -138,17 +136,19 @@ html, body, [class*="css"] {
 .input-panel-sub {
     font-size: 0.7rem;
     color: #9b8c84;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     margin-bottom: 1rem;
     border-bottom: 1px solid #f0ebe4;
     padding-bottom: 0.5rem;
 }
 
-/* Sliders — larger touch target */
+/* Sliders — larger touch target, mobile-friendly */
 .stSlider > label {
     font-size: 0.75rem !important;
     color: #5c4a3a !important;
     font-weight: 500 !important;
+    letter-spacing: 0.03em;
 }
 .stSlider [data-testid="stThumbValue"] {
     background: #8b1a2f !important;
@@ -165,18 +165,20 @@ html, body, [class*="css"] {
     color: #fff !important;
     border: none !important;
     border-radius: 8px !important;
+    font-family: 'Lato', sans-serif !important;
     font-size: 0.85rem !important;
     font-weight: 500 !important;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     padding: 0.6rem 0 !important;
     width: 100%;
+    transition: background 0.2s !important;
 }
 .stButton > button:hover {
     background: #a02038 !important;
 }
 
-/* Result cards */
+/* Result cards — full width on mobile */
 .result-premium {
     background: linear-gradient(135deg, #fff8f8 0%, #fff 100%);
     border: 2px solid #8b1a2f;
@@ -206,7 +208,7 @@ html, body, [class*="css"] {
 }
 .result-prob strong { color: #2c2118; }
 
-/* Engineered feature chips — mobile grid */
+/* Engineered feature tags — mobile grid */
 .feat-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -250,7 +252,7 @@ html, body, [class*="css"] {
     line-height: 1.4;
 }
 
-/* Methodology cards */
+/* Methodology cards — single column on mobile */
 .meth-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -327,7 +329,7 @@ html, body, [class*="css"] {
     color: #2c2118;
 }
 
-/* Insights panel */
+/* Insights panel — stack on mobile */
 .insights-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -363,10 +365,11 @@ html, body, [class*="css"] {
     margin-top: auto;
 }
 
-/* Desktop improvements */
+/* Desktop enhancements */
 @media (min-width: 768px) {
     .top-bar { padding: 0.7rem 2rem; }
     .top-bar-title { font-size: 1.35rem; }
+    .top-bar-meta { font-size: 0.72rem; }
     .tab-content { padding: 1.4rem 2rem; }
     .input-panel { padding: 1.2rem 1.4rem; }
     .feat-grid { grid-template-columns: 1fr 1fr; }
@@ -375,6 +378,7 @@ html, body, [class*="css"] {
     .result-label { font-size: 2.2rem; }
     .result-premium, .result-standard { padding: 1.6rem; }
     .stTabs [data-baseweb="tab"] { font-size: 0.82rem; padding: 0.85rem 1.5rem; }
+    .stTabs [data-baseweb="tab-list"] { padding: 0 2rem; }
 }
 
 /* Very small screens */
@@ -450,7 +454,7 @@ st.markdown("""
     <div class="top-bar-title">🍷 Wine Quality Predictor</div>
     <div class="top-bar-meta">
         Kavinda Pushpa Kumara<br>
-        Food Science · IBM Certified Data Scientist
+        Food Science Student · IBM Certified Data Scientist
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -465,13 +469,12 @@ tab_predict, tab_method, tab_insights = st.tabs([
 
 
 # ═══════════════════════════════════════════════════════════════════════
-# TAB 1 — PREDICT (mobile-optimized layout)
+# TAB 1 — PREDICT (mobile-optimized)
 # ═══════════════════════════════════════════════════════════════════════
 with tab_predict:
     st.markdown('<div class="tab-content">', unsafe_allow_html=True)
 
-    # On mobile, we stack inputs above result. We'll use two columns but let CSS
-    # handle stacking via responsive grid (still using st.columns for structure)
+    # Use columns — they will naturally stack on mobile thanks to CSS
     col_inputs, col_result = st.columns([1, 1], gap="large")
 
     # ── Left: raw inputs ──────────────────────────────────────────────
@@ -482,7 +485,6 @@ with tab_predict:
             <div class="input-panel-sub">Enter lab values — features are engineered automatically</div>
         """, unsafe_allow_html=True)
 
-        # Use two columns inside for sliders on medium+ screens, but they'll stack on mobile
         c1, c2 = st.columns(2)
         with c1:
             alcohol = st.slider("Alcohol (%vol)", 8.0, 15.0,
@@ -516,7 +518,7 @@ with tab_predict:
         st.markdown("</div>", unsafe_allow_html=True)
         predict_btn = st.button("Analyse Wine", use_container_width=True)
 
-    # ── Right: result (will stack below on mobile) ─────────────────────────
+    # ── Right: result ─────────────────────────────────────────────────
     with col_result:
         feats = engineer_features(alcohol, density, sulphates, pH,
                                    volatile_acidity, residual_sugar,
@@ -606,7 +608,7 @@ with tab_predict:
 
 
 # ═══════════════════════════════════════════════════════════════════════
-# TAB 2 — METHODOLOGY (already responsive)
+# TAB 2 — METHODOLOGY (already responsive, unchanged)
 # ═══════════════════════════════════════════════════════════════════════
 with tab_method:
     st.markdown('<div class="tab-content">', unsafe_allow_html=True)
