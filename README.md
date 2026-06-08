@@ -79,6 +79,8 @@ The model is deployed as a **Streamlit web app** where users adjust chemical par
 ![App Screenshot](assets/app_screenshot.png)
 *Interactive sliders with instant prediction and feature contributions*
 
+🔗 **Live Demo:** [wine-quality-predictorapp](https://wine-quality-predictorapp-c7kcqxdnyceobuhepcy3vb.streamlit.app/)
+
 ## Results
 
 | Model | Accuracy | F1 (Premium) | AUC-ROC |
