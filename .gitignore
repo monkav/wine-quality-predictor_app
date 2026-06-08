@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+!notebooks/*.ipynb  # Keep only if in notebooks folder
+
+# Model files (too large for Git)
+*.pkl
+*.joblib
+*.h5
+*.pb
+*.onnx
+
+# Environment
+venv/
+env/
+.env
+.venv
+virtualenv/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS junk files
+.DS_Store
+Thumbs.db
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+
+# Streamlit
+.streamlit/secrets.toml
