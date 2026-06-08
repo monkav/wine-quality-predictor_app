@@ -671,8 +671,7 @@ st.markdown(f"""
         <div class="hero-text">
             <div class="hero-title">Wine Quality Predictor</div>
             <div class="hero-rule"></div>
-            <div class="hero-desc">
-                Leveraging a tuned Random Forest model on the UCI Red Wine dataset, this app translates physicochemical proxies into actionable quality predictions for rapid winery screening
+          
             </div>
         </div>
         <div class="hero-stats">
