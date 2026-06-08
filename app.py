@@ -55,7 +55,7 @@ html, body, [class*="css"] {
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stSidebar"] { display: none; }
 
-/* Desktop framework standard container adjustments */
+/* Desktop container safe frameworks */
 .block-container { 
     padding: 1.5rem 1rem !important; 
     max-width: 1200px !important; 
@@ -424,7 +424,7 @@ html, body, [class*="css"] {
 }
 
 @media (max-width: 768px) {
-    /* Defensive side paddings to block screen edge overflow */
+    /* Safe container edge padding anchors */
     .main .block-container { 
         padding-left: 14px !important; 
         padding-right: 14px !important; 
@@ -452,7 +452,7 @@ html, body, [class*="css"] {
     
     .panel-header img { height: 44px !important; }
     
-    /* Strict labeling visibility anchors */
+    /* Input layout structure labels */
     [data-testid="stSlider"] label, .stSlider label {
         color: #5c4a3a !important;
         font-weight: 500 !important;
@@ -521,7 +521,7 @@ html, body, [class*="css"] {
     }
 }
 
-/* ── High-Contrast Mobile Dark Mode Injection Overrides ── */
+/* ── Dark Mode Text Correction Engine ── */
 .explanation-panel, .explanation-panel div, .explanation-panel strong {
     color: #2c2118 !important;
 }
@@ -531,7 +531,6 @@ html, body, [class*="css"] {
     color: #1a0f08 !important;
 }
 
-/* Guard background card contexts against inverted text bleed */
 .explanation-panel div[style*="background"] {
     color: #1a0f08 !important;
     border: 1px solid #c8bdb8 !important;
@@ -572,7 +571,6 @@ MODEL_METRICS = {
     "accuracy":   0.9156,
     "f1":         0.710,
     "auc_roc":    0.951,
-    "avg_prec":   0.8277,
     "baseline_acc": 0.864,
     "raw_acc":    0.9000,
     "raw_f1":     0.686,
@@ -695,11 +693,11 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
+# ── Dynamic Subtitle Insertion ────────────────────────────────────────────────
+st.markdown("<p style='text-align: center; color: #5c4a3a; font-family: \"Lato\", sans-serif; font-size: 1.05rem; font-style: italic; margin-top: 1.5rem; margin-bottom: 0.5rem; padding: 0 1.2rem;'>A predictive enology dashboard using machine learning and 5 chemically meaningful engineered features to identify premium red wine profiles.</p>", unsafe_allow_html=True)
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# TAB NAVIGATION ENGINE
-# ═══════════════════════════════════════════════════════════════════════════════
-tab_predict, tab_insights, tab_method = st.tabs([
+# ── Tab Navigation Engine ─────────────────────────────────────────────────────
+tab_predict, tab_method = st.tabs([
     "  Predict  ",
     "  Methodology  ",
 ])
@@ -903,7 +901,7 @@ with tab_predict:
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# TAB 3 — METHODOLOGY
+# TAB 2 — METHODOLOGY
 # ═══════════════════════════════════════════════════════════════════════════════
 with tab_method:
     st.markdown('<div class="tab-content">', unsafe_allow_html=True)
@@ -914,7 +912,7 @@ with tab_method:
         <div class="meth-hero-overlay">
             <div class="meth-hero-text">
                 <h2>Scientific Methodology</h2>
-                <p>Five chemically meaningful ratios engineered from raw lab measurements. Each of these features encode winemaking principle used to assess quality.</p>
+                <p>Five chemically meaningful ratios engineered from raw lab measurements. Each of these features encode winemaking principles used to assess quality.</p>
             </div>
         </div>
     </div>
@@ -982,9 +980,8 @@ with tab_method:
 
 
 # ── Footer Presentation ───────────────────────────────────────────────────────
-# ── Footer ────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="app-footer">
-    Kavinda Pushpa Kumara &nbsp;&middot;&nbsp; Food Science Student &amp; Aspiring Data Scientist
+    Kavinda Pushpa Kumara &nbsp;&middot;&nbsp; Food Science Student &amp; IBM Certified Data Scientist
 </div>
 """, unsafe_allow_html=True)
