@@ -468,49 +468,6 @@ html, body, [class*="css"] {
         min-width: 100%;
     }
 }
-
-/* ── Mobile edge-to-edge fix ── */
-@media (max-width: 768px) {
-  .main .block-container { padding-left: 12px !important; padding-right: 12px !important; }
-  .tab-content {
-    background: #ffffff !important;
-    border-radius: 14px !important;
-    padding: 12px !important;
-    margin: 8px 0 16px 0 !important;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.04) !important;
-  }
-  .input-panel {
-    background: #ffffff !important;
-    border: 1px solid #e8ddd5 !important;
-    border-radius: 12px !important;
-    padding: 14px 12px 10px !important;
-    margin: 0 0 12px 0 !important;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.05) !important;
-  }
-  .panel-header img { height: 44px !important; }
-  /* Ensure slider labels are dark and not cut off */
-  [data-testid="stSlider"] label, .stSlider label {
-    color: #5c4a3a !important;
-    font-weight: 500 !important;
-    font-size: 0.85rem !important;
-    white-space: normal !important;
-  }
-  /* Prevent edge bleed */
-  [data-testid="column"] { padding-left: 4px !important; padding-right: 4px !important; }
-}
-
-/* Fix white-on-light text */
-.stSuccess, .stInfo, .stWarning, .stError {
-  color: #2c2118 !important;
-}
-.stSuccess div, .stInfo div, .stWarning div, .stError div {
-  color: #2c2118 !important;
-}
-/* Ensure any light yellow backgrounds have dark text */
-[style*="#faf7f2"], [style*="#fffdf6"] {
-  color: #5c4a3a !important;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
