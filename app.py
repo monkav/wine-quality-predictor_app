@@ -39,7 +39,7 @@ IMG = {
     "vineyard": "https://images.unsplash.com/photo-1464207687429-7505649dae38?w=800&q=80&fit=crop&crop=center",
 }
 
-# ── CSS ───────────────────────────────────────────────────────────────────────
+# ── CSS Styling Engine ────────────────────────────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;500&display=swap');
@@ -55,7 +55,7 @@ html, body, [class*="css"] {
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stSidebar"] { display: none; }
 
-/* Desktop-level safe padding rules */
+/* Desktop framework standard container adjustments */
 .block-container { 
     padding: 1.5rem 1rem !important; 
     max-width: 1200px !important; 
@@ -64,7 +64,7 @@ html, body, [class*="css"] {
 /* Safe area for notched phones */
 .stApp > div:first-child { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
 
-/* ── Hero ── */
+/* ── Hero Banner ── */
 .hero-banner {
     position: relative; width: 100%; height: 160px;
     overflow: hidden; background: #1a0a0e;
@@ -111,7 +111,7 @@ html, body, [class*="css"] {
     text-transform: uppercase; opacity: 0.8;
 }
 
-/* ── Tabs ── */
+/* ── Tabs Configuration ── */
 .stTabs [data-baseweb="tab-list"] {
     background: #fff;
     border-bottom: 1px solid #e8ddd5;
@@ -135,14 +135,14 @@ html, body, [class*="css"] {
 .stTabs [data-baseweb="tab-panel"] { padding: 0 !important; }
 .stTabs [data-baseweb="tab-highlight"] { display: none; }
 
-/* ── Tab content ── */
+/* ── Tab Content ── */
 .tab-content {
     padding: 1.2rem 0.5rem 1.5rem;
     max-width: 1320px; margin: 0 auto; width: 100%;
     box-sizing: border-box;
 }
 
-/* ── Input panel ── */
+/* ── Input Panel ── */
 .input-panel {
     background: #fff;
     border: 1px solid #e8ddd5;
@@ -192,7 +192,7 @@ html, body, [class*="css"] {
 }
 .stButton > button:hover { background: #a02038 !important; }
 
-/* ── Result cards ── */
+/* ── Result Cards ── */
 .result-premium {
     background: linear-gradient(135deg, #fff5f6 0%, #fff 100%);
     border: 2px solid #8b1a2f; border-radius: 12px;
@@ -229,7 +229,7 @@ html, body, [class*="css"] {
 }
 .gauge-fill { height: 100%; border-radius: 99px; }
 
-/* ── Feature chips ── */
+/* ── Feature Chips ── */
 .feat-grid {
     display: grid; grid-template-columns: 1fr 1fr;
     gap: 0.4rem; margin-top: 0.4rem;
@@ -247,7 +247,7 @@ html, body, [class*="css"] {
     font-family: monospace; font-size: 0.78rem;
 }
 
-/* ── Section labels ── */
+/* ── Section Labels ── */
 .sec-title {
     font-family: 'Playfair Display', serif;
     font-size: 1rem; font-weight: 600;
@@ -258,14 +258,14 @@ html, body, [class*="css"] {
     margin-bottom: 0.6rem; line-height: 1.45;
 }
 
-/* ── Explanation panel ── */
+/* ── Explanation Panel ── */
 .explanation-panel {
     background: #fff; border: 1px solid #e8ddd5;
     border-radius: 10px; padding: 0.9rem 1.1rem;
     margin-top: 0.7rem; box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 
-/* ── Metrics strip ── */
+/* ── Metrics Strip ── */
 .metrics-strip {
     display: grid; grid-template-columns: repeat(4,1fr);
     gap: 0.6rem; margin-bottom: 1rem;
@@ -292,7 +292,7 @@ html, body, [class*="css"] {
     margin-top: 0.2rem; display: block;
 }
 
-/* ── Comparison table ── */
+/* ── Comparison Table ── */
 .cmp-table {
     width: 100%; border-collapse: collapse;
     font-size: 0.8rem; margin-top: 0.5rem;
@@ -365,7 +365,7 @@ html, body, [class*="css"] {
 .dir-bad   { color: #8b1a2f; font-size: 0.68rem; font-weight: 500; margin-top: 0.28rem; }
 .dir-range { color: #7a6a30; font-size: 0.68rem; font-weight: 500; margin-top: 0.28rem; }
 
-/* ── Insights tab ── */
+/* ── Insights Tab ── */
 .img-strip {
     display: grid; grid-template-columns: 1fr 1fr;
     gap: 0.7rem; margin-bottom: 1rem;
@@ -403,7 +403,7 @@ html, body, [class*="css"] {
     margin-top: 1rem;
 }
 
-/* ── Streamlit columns mobile stacking ── */
+/* ── Streamlit Columns Mobile Stacking ── */
 [data-testid="stHorizontalBlock"] {
     flex-wrap: wrap;
     gap: 1rem;
@@ -413,10 +413,10 @@ html, body, [class*="css"] {
     min-width: 280px;
 }
 
-/* ── Make tables scrollable ── */
+/* ── Scrollable Elements ── */
 .cmp-table { display: block; overflow-x: auto; white-space: nowrap; }
 
-/* ── Mobile ── */
+/* ── Responsive Viewports ── */
 @media (max-width: 900px) {
     .tab-content { padding: 1rem 1.5rem; }
     .hero-overlay { padding: 0 1.5rem; }
@@ -424,7 +424,7 @@ html, body, [class*="css"] {
 }
 
 @media (max-width: 768px) {
-    /* Prevent container bleed, adding clear side margins as frames */
+    /* Defensive side paddings to block screen edge overflow */
     .main .block-container { 
         padding-left: 14px !important; 
         padding-right: 14px !important; 
@@ -452,7 +452,7 @@ html, body, [class*="css"] {
     
     .panel-header img { height: 44px !important; }
     
-    /* Ensure slider labels stay perfectly visible and readable */
+    /* Strict labeling visibility anchors */
     [data-testid="stSlider"] label, .stSlider label {
         color: #5c4a3a !important;
         font-weight: 500 !important;
@@ -460,7 +460,6 @@ html, body, [class*="css"] {
         white-space: normal !important;
     }
     
-    /* Dynamic grid column spacing framework */
     [data-testid="column"] { 
         padding-left: 4px !important; 
         padding-right: 4px !important; 
@@ -522,26 +521,25 @@ html, body, [class*="css"] {
     }
 }
 
-/* Fix white-on-light text rendering bugs by forcing dark text inside all result boxes */
-.result-premium, .result-standard, .explanation-panel, .feat-chip, .transp-box, .meth-card {
+/* ── High-Contrast Mobile Dark Mode Injection Overrides ── */
+.explanation-panel, .explanation-panel div, .explanation-panel strong {
     color: #2c2118 !important;
 }
 
-/* Force dark text inside your dynamic food science analysis boxes */
-.explanation-panel div {
-    color: #2c2118 !important;
-}
-
-.stSuccess, .stInfo, .stWarning, .stError {
-    color: #2c2118 !important;
-}
-
+.stSuccess, .stInfo, .stWarning, .stError, 
 .stSuccess div, .stInfo div, .stWarning div, .stError div {
-    color: #2c2118 !important;
+    color: #1a0f08 !important;
 }
 
-/* Ensure light background panels protect dark text metrics strictly */
-[style*="background"] {
+/* Guard background card contexts against inverted text bleed */
+.explanation-panel div[style*="background"] {
+    color: #1a0f08 !important;
+    border: 1px solid #c8bdb8 !important;
+    border-left: 5px solid !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+}
+
+.result-premium, .result-standard, .explanation-panel, .feat-chip, .transp-box, .meth-card {
     color: #2c2118 !important;
 }
 </style>
@@ -574,7 +572,7 @@ MODEL_METRICS = {
     "accuracy":   0.9156,
     "f1":         0.710,
     "auc_roc":    0.951,
-    "avg_prec":   0.8277,  # Exact Average Precision from cell 31 of your notebook
+    "avg_prec":   0.8277,
     "baseline_acc": 0.864,
     "raw_acc":    0.9000,
     "raw_f1":     0.686,
@@ -699,7 +697,10 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# ── Tabs Configuration ────────────────────────────────────────────────────────
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# TAB NAVIGATION ENGINE
+# ═══════════════════════════════════════════════════════════════════════════════
 tab_predict, tab_insights, tab_method = st.tabs([
     "  Predict  ",
     "  Model Insights  ",
@@ -715,7 +716,7 @@ with tab_predict:
 
     col_inputs, col_result = st.columns([1, 1], gap="large")
 
-    # ── Left Side Panel: Raw Chemical Matrix Inputs ────────────────────────────
+    # ── Left Column: Input Panel ───────────────────────────────────────────────
     with col_inputs:
         st.markdown(f"""
         <div class="input-panel">
@@ -760,7 +761,7 @@ with tab_predict:
         st.markdown("</div>", unsafe_allow_html=True)
         predict_btn = st.button("Analyse Wine", use_container_width=True)
 
-    # ── Right Side Panel: Classification Output Metrics ────────────────────────
+    # ── Right Column: Prediction Report Output ────────────────────────────────
     with col_result:
         feats = engineer_features(alcohol, density, sulphates, pH,
                                   volatile_acidity, residual_sugar,
@@ -780,7 +781,7 @@ with tab_predict:
             scaled_vals = st.session_state["last_scaled"]
             feats_saved = st.session_state["last_feats"]
 
-            # Dynamic Response Cards
+            # Output Cards
             if label == 1:
                 st.markdown(f"""
                 <div class="result-premium">
@@ -868,7 +869,6 @@ with tab_predict:
                 st.markdown("</div>", unsafe_allow_html=True)
 
         else:
-            # Awaiting initial interaction calculation panel
             st.markdown(f"""
             <div style="position:relative;border-radius:10px;overflow:hidden;
                         height:148px;margin-bottom:0.8rem;">
@@ -886,7 +886,7 @@ with tab_predict:
                 </div>
             </div>""", unsafe_allow_html=True)
 
-        # Engineered interactive parameters
+        # Feature Grid Chips
         st.markdown('<p class="sec-title">Engineered Features</p>', unsafe_allow_html=True)
         st.markdown('<p class="sec-sub">Calculated live from your inputs. These are the 5 values the model actually receives.</p>', unsafe_allow_html=True)
         feat_labels = {
@@ -911,7 +911,6 @@ with tab_predict:
 with tab_insights:
     st.markdown('<div class="tab-content">', unsafe_allow_html=True)
 
-    # Statistical Evaluation Indicators
     st.markdown(f"""
     <div class="metrics-strip">
       <div class="metric-card">
@@ -988,27 +987,27 @@ with tab_insights:
               <td>86.4%</td>
               <td>0.000</td>
               <td>0.500</td>
-              <td>0.140</td>
+              <td>14.0%</td>
             </tr>
             <tr>
               <td>5 Raw features (RF)</td>
               <td>90.0%</td>
               <td>0.686</td>
               <td>0.927</td>
-              <td>0.785</td>
+              <td>78.5%</td>
             </tr>
             <tr class="highlight-row">
               <td><strong>5 Engineered features (RF)</strong></td>
               <td class="best">91.6%</td>
               <td class="best">0.710</td>
               <td class="best">0.951</td>
-              <td class="best">{MODEL_METRICS['avg_prec']*100:.1f}%</td>
+              <td class="best">{MODEL_METRICS['avg_prec']*100:.2f}%</td>
             </tr>
           </tbody>
         </table>
         <div style="font-size:0.68rem;color:#9b8c84;margin-top:0.5rem;">
           Note: accuracy alone is misleading at 14% class balance &mdash;
-          F1, AUC-ROC, and Average Precision are the meaningful indicators here.
+          F1, AUC-ROC, and Average Precision are the meaningful metrics.
         </div>
         """, unsafe_allow_html=True)
 
@@ -1131,7 +1130,7 @@ with tab_method:
     st.markdown("</div>", unsafe_allow_html=True)
 
 
-# ── Footer ────────────────────────────────────────────────────────────────────
+# ── Footer Presentation ───────────────────────────────────────────────────────
 st.markdown("""
 <div class="app-footer">
     Wine Quality Predictor &nbsp;&middot;&nbsp; Kavinda Pushpa Kumara
