@@ -468,6 +468,43 @@ html, body, [class*="css"] {
         min-width: 100%;
     }
 }
+
+/* ── Mobile polish fixes ── */
+html, body { overflow-x: hidden; }
+.block-container { padding-left: 0 !important; padding-right: 0 !important; }
+
+/* Ensure tab content has safe side padding on phones */
+@media (max-width: 768px) {
+  .tab-content { padding: 0.9rem 0.9rem 1.2rem !important; }
+  .input-panel { padding: 0.9rem 0.9rem 0.6rem !important; border-radius: 10px; }
+  /* Give sliders breathing room */
+  [data-testid="stSlider"] { padding: 0 0.1rem; }
+  .stSlider > label { margin-bottom: 0.25rem !important; }
+  /* Prevent edge-to-edge */
+  [data-testid="column"] { padding: 0 0.1rem; }
+  /* Bottom safe area so button isn't hidden */
+  .main .block-container { padding-bottom: 90px !important; }
+  /* Hide Streamlit cloud floating buttons */
+  [data-testid="stToolbar"], [data-testid="stDecoration"], [data-testid="stStatusWidget"],
+  .stAppDeployButton, button[kind="header"], div[data-testid="stAppViewBlockContainer"] > div > div > button {
+    display: none !important;
+  }
+  /* Make Analyse button sticky and full width */
+  .stButton > button {
+    position: sticky;
+    bottom: 12px;
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(139,26,47,0.25);
+  }
+}
+
+/* Tighter spacing for very small screens */
+@media (max-width: 480px) {
+  .tab-content { padding: 0.75rem 0.75rem 1rem !important; }
+  .input-panel { padding: 0.8rem 0.8rem 0.5rem !important; }
+  .stSlider > label { font-size: 0.72rem !important; }
+}
+
 </style>
 """, unsafe_allow_html=True)
 
